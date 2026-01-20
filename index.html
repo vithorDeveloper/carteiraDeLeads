@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+    <title>Banner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  </head>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['"Bai Jamjuree"', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+
+    <style>
+  
+      .custom-scroll::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .custom-scroll::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .custom-scroll::-webkit-scrollbar-thumb {
+        background-color: #a8a29e;
+        border-radius: 20px; 
+      }
+
+      .custom-scroll::-webkit-scrollbar-thumb:hover {
+        background-color: #78716c;
+      }
+    </style>
+
+  <body class="bg-[#f7f7f7] w-full h-screen overflow-hidden flex flex-col md:w-[85%] md:mx-auto lg:w-[70%]">
+
+    <header class="flex items-center justify-between w-[95%] mx-auto pb-6 pt-8 flex-shrink-0">
+
+      <h1 class="font-bold text-2xl">Meus Leads</h1>
+      <i class="ph-fill ph-x-square text-3xl text-red-600 hover:text-black"></i>
+
+    </header>
+
+    <div class="relative w-[95%] mx-auto h-10 bg-stone-200 rounded-xl flex items-center flex-shrink-0 md:w-[80%] min-[1400px]:h-12">
+     
+      <div id="selection-bg" class="absolute left-[0.3rem] top-[0.25rem] bottom-1 w-[calc(50%-0.375rem)] bg-white rounded-lg shadow-sm transition-transform duration-300 ease-out translate-x-0"></div>
+
+      <button onclick="selectTab(0)" class="w-1/2 h-full z-10 rounded-full text-sm font-semibold text-gray-600 transition-colors duration-300 focus:outline-none tab-btn" data-index="0">
+        Leads Pendentes
+      </button>
+
+      <button onclick="selectTab(1)" class="w-1/2 h-full z-10 rounded-full text-sm font-semibold text-stone-400 transition-colors duration-300 focus:outline-none tab-btn" data-index="1">
+        Status Confirmação
+      </button>
+
+    </div>
+
+    <div class="flex items-center justify-center gap-3 w-[85%] mx-auto relative">
+      <div class="flex items-center gap-3 bg-stone-100 border border-stone-300 rounded-lg my-4 w-[90%] mx-auto transition-colors focus-within:border-none focus-within:bg-white focus-within:shadow-md flex-shrink-0 md:w-[60%]">
+      
+        <i class="ph ph-magnifying-glass pl-2 text-xl text-stone-600 font-bold"></i>
+  
+        <input type="text" oninput="filtrarLeads(this.value)" placeholder="Pesquisar Registros" class="bg-transparent placeholder:text-sm placeholder:opacity-40 py-1 w-full font-medium outline-none placeholder-gray-500 min-[1400px]:py-2">
+        
+      </div>
+      
+      <div id="btn-filtro" class="bg-neutral-300 p-1 border border-neutral-400 rounded-md rotate-90 cursor-pointer hover:bg-neutral-400 transition-all md:absolute md:left-[83%]">
+        <i class="ph-fill ph-sliders text-stone-700 text-2xl"></i>
+      </div>
+
+      <div id="menu-tags" class="hidden absolute right-10 top-0 bg-white border border-neutral-300 shadow-lg rounded-md p-2 z-20 w-40">
+        <button class="block w-full text-left px-2 py-1 hover:bg-neutral-100 text-sm" data-filter="all">Mostrar Todos</button>
+        <hr class="my-1">
+        <button class="block w-full text-left px-2 py-1 hover:bg-neutral-100 text-sm" data-filter="prospector">Prospector</button>
+        <button class="block w-full text-left px-2 py-1 hover:bg-neutral-100 text-sm" data-filter="crm">CRM</button>
+        <button class="block w-full text-left px-2 py-1 hover:bg-neutral-100 text-sm" data-filter="montadora">Montadora</button>
+        <button class="block w-full text-left px-2 py-1 hover:bg-neutral-100 text-sm" data-filter="cockpit">Cockpit</button>
+      </div>
+    </div>
+
+      <div id="tab-leads-pendentes" class="w-[95%] mx-auto p-1 rounded-2xl flex-1 overflow-hidden mb-4">
+
+        <div id="mensagem-vazia-pendentes" class="hidden h-full flex items-center justify-center">
+          <div class="text-center">
+            <i class="ph ph-clipboard text-6xl text-stone-300 mb-4"></i>
+            <p class="text-xl font-semibold text-stone-400">Nenhum lead pendente</p>
+            <p class="text-sm text-stone-400 mt-2">Use os filtros para encontrar leads</p>
+          </div>
+        </div>
+
+        <div class="h-full overflow-y-auto custom-scroll grid grid-cols-1 min-[1400px]:grid-cols-2 min-[1400px]:gap-x-4 gap-2 content-start">
+          <div class="banner-item relative w-full h-[8rem] bg-white rounded-2xl rounded-tr-none overflow-hidden pt-2 pb-4 pl-3 flex-shrink-0 md:pl-6 md:pr-3" data-tag="prospector">
+      
+            <div class="absolute top-0 right-0 w-[8rem] h-10 bg-[#f7f7f7] rounded-bl-[1.2rem] z-10 flex justify-center items-center">
+              
+              <div class="absolute top-0 -left-8 w-8 h-8 bg-transparent rounded-tr-2xl shadow-[15px_-15px_0_0_#f7f7f7]"></div>
+              
+              <div class="absolute -bottom-8 right-0 w-8 h-8 bg-transparent rounded-tr-3xl shadow-[10px_-10px_0_0_#f7f7f7]"></div>
+              
+              <div class="bg-[#00304F] w-[6.5rem] text-white mx-auto text-center text-[9px] font-bold py-1 mb-1 rounded-full uppercase tracking-wider shadow-sm z-10">
+                <p>Prospector</p>
+              </div>
+              
+            </div>
+      
+            <section class="h-full flex flex-col justify-between">
+      
+              <h1 class="font-bold truncate w-[51%] text-lg text-stone-600">Guilherme Cardoso dos Santos lima</h1>
+      
+              <div class="flex justify-between">
+                <div class="flex flex-col">
+                  <p class="font-medium leading-7 text-stone-600 text-sm">Contatar por:</p>
+        
+                  <div class="flex gap-2">
+                    <button class="btn-whatsapp flex items-center justify-center bg-neutral-500 text-white px-3 py-2 gap-1 rounded-md hover:bg-neutral-200 hover:text-black">
+                      <i class="fa-brands fa-whatsapp"></i><span class="text-xs">WhatsApp</span>
+                    </button>
+                    <button class="flex items-center justify-center bg-neutral-500 text-white px-3 gap-1 rounded-md hover:bg-neutral-200 hover:text-black">
+                      <i class="fa-solid fa-phone text-xs"></i><span class="text-xs">Telefone</span>
+                    </button>
+                  </div>
+                </div>
+      
+                <div class="flex flex-col pr-3">
+                  <p class="font-medium leading-7 text-stone-600 text-sm">Presença:</p>
+        
+                  <div class="flex gap-3">
+                    <button onclick="acaoCard(this, 'like')" class="btn-like flex items-center justify-center text-white px-3 py-1 hover:scale-[105%] rounded-md bg-lime-400/20">
+                      <i class="ph-fill ph-thumbs-up text-xl text-lime-600"></i>
+                    </button>
+                    <button onclick="acaoCard(this, 'dislike')" class="btn-dislike flex items-center justify-center text-white px-3 hover:scale-[105%] rounded-md bg-red-600/20">
+                     <i class="ph-fill ph-thumbs-down text-xl text-red-600"></i>
+                    </button>
+                  </div>
+                </div>
+        
+              </div>
+      
+            </section>
+      
+          </div>
+          <div class="banner-item relative w-full h-[8rem] bg-white rounded-2xl rounded-tr-none overflow-hidden pt-2 pb-4 pl-3 flex-shrink-0 md:pl-6 md:pr-3" data-tag="cockpit">
+      
+            <div class="absolute top-0 right-0 w-[8rem] h-10 bg-[#f7f7f7] rounded-bl-[1.2rem] z-10 flex justify-center items-center">
+              
+              <div class="absolute top-0 -left-8 w-8 h-8 bg-transparent rounded-tr-2xl shadow-[15px_-15px_0_0_#f7f7f7]"></div>
+              
+              <div class="absolute -bottom-8 right-0 w-8 h-8 bg-transparent rounded-tr-3xl shadow-[10px_-10px_0_0_#f7f7f7]"></div>
+              
+              <div class="bg-[#BF360C] w-[6.5rem] text-white mx-auto text-center text-[9px] font-bold py-1 mb-1 rounded-full uppercase tracking-wider shadow-sm z-10">
+                <p>Cockpit</p>
+              </div>
+              
+            </div>
+      
+            <section class="h-full flex flex-col justify-between">
+      
+              <h1 class="font-bold truncate w-[51%] text-lg text-stone-600">Rodinei Pedro dos Santos Candido</h1>
+      
+              <div class="flex justify-between">
+                <div class="flex flex-col">
+                  <p class="font-medium leading-7 text-stone-600 text-sm">Contatar por:</p>
+        
+                  <div class="flex gap-2">
+                    <button class="btn-whatsapp flex items-center justify-center bg-neutral-500 text-white px-3 py-2 gap-1 rounded-md hover:bg-neutral-200 hover:text-black">
+                      <i class="fa-brands fa-whatsapp"></i><span class="text-xs">WhatsApp</span>
+                    </button>
+                    <button class="flex items-center ju stify-center bg-neutral-500 text-white px-3 gap-1 rounded-md hover:bg-neutral-200 hover:text-black">
+                      <i class="fa-solid fa-phone text-xs"></i><span class="text-xs">Telefone</span>
+                    </button>
+                  </div>
+                </div>
+      
+                <div class="flex flex-col pr-3">
+                  <p class="font-medium leading-7 text-stone-600 text-sm">Presença:</p>
+        
+                  <div class="flex gap-3">
+                    <button onclick="acaoCard(this, 'like')" class="btn-like flex items-center justify-center text-white px-3 py-1 hover:scale-[105%] rounded-md bg-lime-400/20">
+                      <i class="ph-fill ph-thumbs-up text-xl text-lime-600"></i>
+                    </button>
+                    <button onclick="acaoCard(this, 'dislike')" class="btn-dislike flex items-center justify-center text-white px-3 hover:scale-[105%] rounded-md bg-red-600/20">
+                     <i class="ph-fill ph-thumbs-down text-xl text-red-600"></i>
+                    </button>
+                  </div>
+                </div>
+        
+              </div>
+      
+            </section>
+      
+          </div>
+          <div class="banner-item relative w-full h-[8rem] bg-white rounded-2xl rounded-tr-none overflow-hidden pt-2 pb-4 pl-3 flex-shrink-0 md:pl-6 md:pr-3" data-tag="montadora">
+      
+            <div class="absolute top-0 right-0 w-[8rem] h-10 bg-[#f7f7f7] rounded-bl-[1.2rem] z-10 flex justify-center items-center">
+              
+              <div class="absolute top-0 -left-8 w-8 h-8 bg-transparent rounded-tr-2xl shadow-[15px_-15px_0_0_#f7f7f7]"></div>
+              
+              <div class="absolute -bottom-8 right-0 w-8 h-8 bg-transparent rounded-tr-3xl shadow-[10px_-10px_0_0_#f7f7f7]"></div>
+              
+              <div class="bg-[#003400] w-[6.5rem] text-white mx-auto text-center text-[9px] font-bold py-1 mb-1 rounded-full uppercase tracking-wider shadow-sm z-10">
+                <p>Montadora</p>
+              </div>
+              
+            </div>
+      
+            <section class="h-full flex flex-col justify-between">
+      
+              <h1 class="font-bold truncate w-[51%] text-lg text-stone-600">Rosona Vieira da Silva lima Oliveira</h1>
+      
+              <div class="flex justify-between">
+                <div class="flex flex-col">
+                  <p class="font-medium leading-7 text-stone-600 text-sm">Contatar por:</p>
+        
+                  <div class="flex gap-2">
+                    <button class="btn-whatsapp flex items-center justify-center bg-neutral-500 text-white px-3 py-2 gap-1 rounded-md hover:bg-neutral-200 hover:text-black">
+                      <i class="fa-brands fa-whatsapp"></i><span class="text-xs">WhatsApp</span>
+                    </button>
+                    <button class="flex items-center justify-center bg-neutral-500 text-white px-3 gap-1 rounded-md hover:bg-neutral-200 hover:text-black">
+                      <i class="fa-solid fa-phone text-xs"></i><span class="text-xs">Telefone</span>
+                    </button>
+                  </div>
+                </div>
+      
+                <div class="flex flex-col pr-3">
+                  <p class="font-medium leading-7 text-stone-600 text-sm">Presença:</p>
+        
+                  <div class="flex gap-3">
+                    <button onclick="acaoCard(this, 'like')" class="btn-like flex items-center justify-center text-white px-3 py-1 hover:scale-[105%] rounded-md bg-lime-400/20">
+                      <i class="ph-fill ph-thumbs-up text-xl text-lime-600"></i>
+                    </button>
+                    <button onclick="acaoCard(this, 'dislike')" class="btn-dislike flex items-center justify-center text-white px-3 hover:scale-[105%] rounded-md bg-red-600/20">
+                     <i class="ph-fill ph-thumbs-down text-xl text-red-600"></i>
+                    </button>
+                  </div>
+                </div>
+        
+              </div>
+      
+            </section>
+      
+          </div>
+          <div class="banner-item relative w-full h-[8rem] bg-white rounded-2xl rounded-tr-none overflow-hidden pt-2 pb-4 pl-3 flex-shrink-0 md:pl-6 md:pr-3" data-tag="crm">
+      
+            <div class="absolute top-0 right-0 w-[8rem] h-10 bg-[#f7f7f7] rounded-bl-[1.2rem] z-10 flex justify-center items-center">
+              
+              <div class="absolute top-0 -left-8 w-8 h-8 bg-transparent rounded-tr-2xl shadow-[15px_-15px_0_0_#f7f7f7]"></div>
+              
+              <div class="absolute -bottom-8 right-0 w-8 h-8 bg-transparent rounded-tr-3xl shadow-[10px_-10px_0_0_#f7f7f7]"></div>
+              
+              <div class="bg-[#C88719] w-[6.5rem] text-white mx-auto text-center text-[9px] font-bold py-1 mb-1 rounded-full uppercase tracking-wider shadow-sm z-10">
+                <p>crm interno</p>
+              </div>
+              
+            </div>
+      
+            <section class="h-full flex flex-col justify-between">
+      
+              <h1 class="font-bold truncate w-[51%] text-lg text-stone-600">Alexandre Carvalho Rodrigues de lima</h1>
+      
+              <div class="flex justify-between">
+                <div class="flex flex-col">
+                  <p class="font-medium leading-7 text-stone-600 text-sm">Contatar por:</p>
+        
+                  <div class="flex gap-2">
+                    <button class="btn-whatsapp flex items-center justify-center bg-neutral-500 text-white px-3 py-2 gap-1 rounded-md hover:bg-neutral-200 hover:text-black">
+                      <i class="fa-brands fa-whatsapp"></i><span class="text-xs">WhatsApp</span>
+                    </button>
+                    <button class="flex items-center justify-center bg-neutral-500 text-white px-3 gap-1 rounded-md hover:bg-neutral-200 hover:text-black">
+                      <i class="fa-solid fa-phone text-xs"></i><span class="text-xs">Telefone</span>
+                    </button>
+                  </div>
+                </div>
+      
+                <div class="flex flex-col pr-3">
+                  <p class="font-medium leading-7 text-stone-600 text-sm">Presença:</p>
+        
+                  <div class="flex gap-3">
+                    <button onclick="acaoCard(this, 'like')" class="btn-like flex items-center justify-center text-white px-3 py-1 hover:scale-[105%] rounded-md bg-lime-400/20">
+                      <i class="ph-fill ph-thumbs-up text-xl text-lime-600"></i>
+                    </button>
+                    <button onclick="acaoCard(this, 'dislike')" class="btn-dislike flex items-center justify-center text-white px-3 hover:scale-[105%] rounded-md bg-red-600/20">
+                     <i class="ph-fill ph-thumbs-down text-xl text-red-600"></i>
+                    </button>
+                  </div>
+                </div>
+        
+              </div>
+      
+            </section>
+      
+          </div>
+          <div class="banner-item relative w-full h-[8rem] bg-white rounded-2xl rounded-tr-none overflow-hidden pt-2 pb-4 pl-3 flex-shrink-0 md:pl-6 md:pr-3" data-tag="prospector">
+      
+            <div class="absolute top-0 right-0 w-[8rem] h-10 bg-[#f7f7f7] rounded-bl-[1.2rem] z-10 flex justify-center items-center">
+              
+              <div class="absolute top-0 -left-8 w-8 h-8 bg-transparent rounded-tr-2xl shadow-[15px_-15px_0_0_#f7f7f7]"></div>
+              
+              <div class="absolute -bottom-8 right-0 w-8 h-8 bg-transparent rounded-tr-3xl shadow-[10px_-10px_0_0_#f7f7f7]"></div>
+              
+              <div class="bg-[#00304F] w-[6.5rem] text-white mx-auto text-center text-[9px] font-bold py-1 mb-1 rounded-full uppercase tracking-wider shadow-sm z-10">
+                <p>Prospector</p>
+              </div>
+              
+            </div>
+      
+            <section class="h-full flex flex-col justify-between">
+      
+              <h1 class="font-bold truncate w-[51%] text-lg text-stone-600">Guilherme Cardoso dos Santos lima</h1>
+      
+              <div class="flex justify-between">
+                <div class="flex flex-col">
+                  <p class="font-medium leading-7 text-stone-600 text-sm">Contatar por:</p>
+        
+                  <div class="flex gap-2">
+                    <button class="btn-whatsapp flex items-center justify-center bg-neutral-500 text-white px-3 py-2 gap-1 rounded-md hover:bg-neutral-200 hover:text-black">
+                      <i class="fa-brands fa-whatsapp"></i><span class="text-xs">WhatsApp</span>
+                    </button>
+                    <button class="flex items-center justify-center bg-neutral-500 text-white px-3 gap-1 rounded-md hover:bg-neutral-200 hover:text-black">
+                      <i class="fa-solid fa-phone text-xs"></i><span class="text-xs">Telefone</span>
+                    </button>
+                  </div>
+                </div>
+      
+                <div class="flex flex-col pr-3">
+                  <p class="font-medium leading-7 text-stone-600 text-sm">Presença:</p>
+        
+                  <div class="flex gap-3">
+                    <button onclick="acaoCard(this, 'like')" class="btn-like flex items-center justify-center text-white px-3 py-1 hover:scale-[105%] rounded-md bg-lime-400/20">
+                      <i class="ph-fill ph-thumbs-up text-xl text-lime-600"></i>
+                    </button>
+                    <button onclick="acaoCard(this, 'dislike')" class="btn-dislike flex items-center justify-center text-white px-3 hover:scale-[105%] rounded-md bg-red-600/20">
+                     <i class="ph-fill ph-thumbs-down text-xl text-red-600"></i>
+                    </button>
+                  </div>
+                </div>
+        
+              </div>
+      
+            </section>
+      
+          </div>
+          <div class="banner-item relative w-full h-[8rem] bg-white rounded-2xl rounded-tr-none overflow-hidden pt-2 pb-4 pl-3 flex-shrink-0 md:pl-6 md:pr-3" data-tag="cockpit">
+      
+            <div class="absolute top-0 right-0 w-[8rem] h-10 bg-[#f7f7f7] rounded-bl-[1.2rem] z-10 flex justify-center items-center">
+              
+              <div class="absolute top-0 -left-8 w-8 h-8 bg-transparent rounded-tr-2xl shadow-[15px_-15px_0_0_#f7f7f7]"></div>
+              
+              <div class="absolute -bottom-8 right-0 w-8 h-8 bg-transparent rounded-tr-3xl shadow-[10px_-10px_0_0_#f7f7f7]"></div>
+              
+              <div class="bg-[#BF360C] w-[6.5rem] text-white mx-auto text-center text-[9px] font-bold py-1 mb-1 rounded-full uppercase tracking-wider shadow-sm z-10">
+                <p>Cockpit</p>
+              </div>
+              
+            </div>
+      
+            <section class="h-full flex flex-col justify-between">
+      
+              <h1 class="font-bold truncate w-[51%] text-lg text-stone-600">Rodinei Pedro dos Santos Candido</h1>
+      
+              <div class="flex justify-between">
+                <div class="flex flex-col">
+                  <p class="font-medium leading-7 text-stone-600 text-sm">Contatar por:</p>
+        
+                  <div class="flex gap-2">
+                    <button class="btn-whatsapp flex items-center justify-center bg-neutral-500 text-white px-3 py-2 gap-1 rounded-md hover:bg-neutral-200 hover:text-black">
+                      <i class="fa-brands fa-whatsapp"></i><span class="text-xs">WhatsApp</span>
+                    </button>
+                    <button class="flex items-center justify-center bg-neutral-500 text-white px-3 gap-1 rounded-md hover:bg-neutral-200 hover:text-black">
+                      <i class="fa-solid fa-phone text-xs"></i><span class="text-xs">Telefone</span>
+                    </button>
+                  </div>
+                </div>
+      
+                <div class="flex flex-col pr-3">
+                  <p class="font-medium leading-7 text-stone-600 text-sm">Presença:</p>
+        
+                  <div class="flex gap-3">
+                    <button onclick="acaoCard(this, 'like')" class="btn-like flex items-center justify-center text-white px-3 py-1 hover:scale-[105%] rounded-md bg-lime-400/20">
+                      <i class="ph-fill ph-thumbs-up text-xl text-lime-600"></i>
+                    </button>
+                    <button onclick="acaoCard(this, 'dislike')" class="btn-dislike flex items-center justify-center text-white px-3 hover:scale-[105%] rounded-md bg-red-600/20">
+                     <i class="ph-fill ph-thumbs-down text-xl text-red-600"></i>
+                    </button>
+                  </div>
+                </div>
+        
+              </div>
+      
+            </section>
+      
+          </div>
+          <div class="banner-item relative w-full h-[8rem] bg-white rounded-2xl rounded-tr-none overflow-hidden pt-2 pb-4 pl-3 flex-shrink-0 md:pl-6 md:pr-3" data-tag="montadora">
+      
+            <div class="absolute top-0 right-0 w-[8rem] h-10 bg-[#f7f7f7] rounded-bl-[1.2rem] z-10 flex justify-center items-center">
+              
+              <div class="absolute top-0 -left-8 w-8 h-8 bg-transparent rounded-tr-2xl shadow-[15px_-15px_0_0_#f7f7f7]"></div>
+              
+              <div class="absolute -bottom-8 right-0 w-8 h-8 bg-transparent rounded-tr-3xl shadow-[10px_-10px_0_0_#f7f7f7]"></div>
+              
+              <div class="bg-[#003400] w-[6.5rem] text-white mx-auto text-center text-[9px] font-bold py-1 mb-1 rounded-full uppercase tracking-wider shadow-sm z-10">
+                <p>Montadora</p>
+              </div>
+              
+            </div>
+      
+            <section class="h-full flex flex-col justify-between">
+      
+              <h1 class="font-bold truncate w-[51%] text-lg text-stone-600">Rosona Vieira da Silva lima Oliveira</h1>
+      
+              <div class="flex justify-between">
+                <div class="flex flex-col">
+                  <p class="font-medium leading-7 text-stone-600 text-sm">Contatar por:</p>
+        
+                  <div class="flex gap-2">
+                    <button class="btn-whatsapp flex items-center justify-center bg-neutral-500 text-white px-3 py-2 gap-1 rounded-md hover:bg-neutral-200 hover:text-black">
+                      <i class="fa-brands fa-whatsapp"></i><span class="text-xs">WhatsApp</span>
+                    </button>
+                    <button class="flex items-center justify-center bg-neutral-500 text-white px-3 gap-1 rounded-md hover:bg-neutral-200 hover:text-black">
+                      <i class="fa-solid fa-phone text-xs"></i><span class="text-xs">Telefone</span>
+                    </button>
+                  </div>
+                </div>
+      
+                <div class="flex flex-col pr-3">
+                  <p class="font-medium leading-7 text-stone-600 text-sm">Presença:</p>
+        
+                  <div class="flex gap-3">
+                    <button onclick="acaoCard(this, 'like')" class="btn-like flex items-center justify-center text-white px-3 py-1 hover:scale-[105%] rounded-md bg-lime-400/20">
+                      <i class="ph-fill ph-thumbs-up text-xl text-lime-600"></i>
+                    </button>
+                    <button onclick="acaoCard(this, 'dislike')" class="btn-dislike flex items-center justify-center text-white px-3 hover:scale-[105%] rounded-md bg-red-600/20">
+                     <i class="ph-fill ph-thumbs-down text-xl text-red-600"></i>
+                    </button>
+                  </div>
+                </div>
+        
+              </div>
+      
+            </section>
+      
+          </div>
+          <div class="banner-item relative w-full h-[8rem] bg-white rounded-2xl rounded-tr-none overflow-hidden pt-2 pb-4 pl-3 flex-shrink-0 md:pl-6 md:pr-3" data-tag="crm">
+      
+            <div class="absolute top-0 right-0 w-[8rem] h-10 bg-[#f7f7f7] rounded-bl-[1.2rem] z-10 flex justify-center items-center">
+              
+              <div class="absolute top-0 -left-8 w-8 h-8 bg-transparent rounded-tr-2xl shadow-[15px_-15px_0_0_#f7f7f7]"></div>
+              
+              <div class="absolute -bottom-8 right-0 w-8 h-8 bg-transparent rounded-tr-3xl shadow-[10px_-10px_0_0_#f7f7f7]"></div>
+              
+              <div class="bg-[#C88719] w-[6.5rem] text-white mx-auto text-center text-[9px] font-bold py-1 mb-1 rounded-full uppercase tracking-wider shadow-sm z-10">
+                <p>crm interno</p>
+              </div>
+              
+            </div>
+      
+            <section class="h-full flex flex-col justify-between">
+      
+              <h1 class="font-bold truncate w-[51%] text-lg text-stone-600">Alexandre Carvalho Rodrigues de lima</h1>
+      
+              <div class="flex justify-between">
+                <div class="flex flex-col">
+                  <p class="font-medium leading-7 text-stone-600 text-sm">Contatar por:</p>
+        
+                  <div class="flex gap-2">
+                    <button class="btn-whatsapp flex items-center justify-center bg-neutral-500 text-white px-3 py-2 gap-1 rounded-md hover:bg-neutral-200 hover:text-black">
+                      <i class="fa-brands fa-whatsapp"></i><span class="text-xs">WhatsApp</span>
+                    </button>
+                    <button class="flex items-center justify-center bg-neutral-500 text-white px-3 gap-1 rounded-md hover:bg-neutral-200 hover:text-black">
+                      <i class="fa-solid fa-phone text-xs"></i><span class="text-xs">Telefone</span>
+                    </button>
+                  </div>
+                </div>
+      
+                <div class="flex flex-col pr-3">
+                  <p class="font-medium leading-7 text-stone-600 text-sm">Presença:</p>
+        
+                  <div class="flex gap-3">
+                    <button onclick="acaoCard(this, 'like')" class="btn-like flex items-center justify-center text-white px-3 py-1 hover:scale-[105%] rounded-md bg-lime-400/20">
+                      <i class="ph-fill ph-thumbs-up text-xl text-lime-600"></i>
+                    </button>
+                    <button onclick="acaoCard(this, 'dislike')" class="btn-dislike flex items-center justify-center text-white px-3 hover:scale-[105%] rounded-md bg-red-600/20">
+                     <i class="ph-fill ph-thumbs-down text-xl text-red-600"></i>
+                    </button>
+                  </div>
+                </div>
+        
+              </div>
+      
+            </section>
+      
+          </div>
+        </div>
+
+      </div>
+
+      <div id="tab-status-confirmacao" class=" hidden w-[95%] mx-auto p-1 rounded-2xl flex-1 overflow-hidden mb-4">
+
+        <div id="mensagem-vazia-confirmacao" class="hidden h-full flex items-center justify-center">
+          <div class="text-center">
+            <i class="ph ph-check-circle text-6xl text-stone-300 mb-4"></i>
+            <p class="text-xl font-semibold text-stone-400">Nenhum lead confirmado</p>
+            <p class="text-sm text-stone-400 mt-2">Confirme os leads pendentes para vê-los aqui</p>
+          </div>
+        </div>
+
+        <div class="h-full overflow-y-auto custom-scroll grid grid-cols-1 min-[1400px]:grid-cols-2 min-[1400px]:gap-x-4 gap-2 content-start">
+          
+        </div>
+
+      </div>
+
+      <div id="welcome-toast" class="fixed bottom-6 right-6 w-[90%] max-w-sm bg-white border border-stone-200 shadow-2xl rounded-2xl p-5 z-50 transition-all duration-500 transform translate-y-10 opacity-0 hidden">
+    
+        <div class="flex items-start gap-4">
+          <div class="bg-indigo-100 p-2 rounded-full text-indigo-600 flex-shrink-0">
+            <i class="ph-fill ph-lightbulb text-2xl"></i>
+          </div>
+
+          <div class="flex-1">
+            <h3 class="font-extrabold text-orange-600 text-lg mb-1">Dica de Ouro !!!</h3>
+            <p class="text-stone-500 text-sm leading-relaxed mb-4">
+              <strong class="text-stone-700 block mb-1">Lead Quente!</strong>
+              
+              O ícone 
+              <img class="w-5 inline-block align-text-bottom mx-1" src="chama.png" alt="icone fogo">
+              ao lado do nome indica que o lead passou por <strong>Dupla Confirmação</strong>.
+              
+              <span class="block mt-2 text-indigo-600 font-medium">
+                Dê prioridade a esses contatos, pois eles têm altas chance de fechar negócio!
+              </span>
+            </p>
+
+            <div class="flex items-center justify-between gap-3">
+              
+              <label class="flex items-center gap-2 cursor-pointer group">
+                <div class="relative flex items-center">
+                  <input type="checkbox" id="dont-show-again" class="peer h-4 w-4 cursor-pointer appearance-none rounded border border-stone-300 shadow-sm checked:border-indigo-500 checked:bg-indigo-500 hover:border-indigo-400 transition-all">
+                  <i class="ph-bold ph-check absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 peer-checked:opacity-100 text-[10px]"></i>
+                </div>
+                <span class="text-xs text-stone-500 font-medium group-hover:text-stone-700 select-none">Não mostrar novamente</span>
+              </label>
+
+              <button onclick="closeToast()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-4 py-2 rounded-lg transition-colors shadow-sm">
+                Entendi
+              </button>
+            </div>
+          </div>
+
+          <button onclick="closeToast()" class="text-stone-400 hover:text-stone-600 transition-colors">
+            <i class="ph-bold ph-x"></i>
+          </button>
+        </div>
+      </div>
+
+    <script>
+      const bgSlider = document.getElementById('selection-bg');
+      const buttons = document.querySelectorAll('.tab-btn');
+      
+      // Seleciona os containers das abas
+      const tabLeadsPendentes = document.getElementById('tab-leads-pendentes');
+      const tabStatusConfirmacao = document.getElementById('tab-status-confirmacao');
+
+      function selectTab(index) {
+        // Lógica do movimento da barra
+        if (index === 0) {
+          bgSlider.style.transform = 'translateX(0px)';
+        } else {
+          bgSlider.style.transform = 'translateX(calc(100% + 0.1rem))';
+        }
+
+        // Atualiza as cores dos botões
+        buttons.forEach((btn, i) => {
+          if (i === index) {
+            btn.classList.remove('text-stone-400');
+            btn.classList.add('text-gray-600');
+          } else {
+            btn.classList.remove('text-gray-600');
+            btn.classList.add('text-stone-400');
+          }
+        });
+
+        // Controla a visibilidade das abas
+        if (index === 0) {
+          tabLeadsPendentes.classList.remove('hidden');
+          tabStatusConfirmacao.classList.add('hidden');
+        } else {
+          tabLeadsPendentes.classList.add('hidden');
+          tabStatusConfirmacao.classList.remove('hidden');
+        }
+      }
+
+      const btnFiltro = document.getElementById('btn-filtro');
+      const menuTags = document.getElementById('menu-tags');
+      const botoesFiltro = document.querySelectorAll('[data-filter]');
+      const banners = document.querySelectorAll('.banner-item');
+
+      // 1. Abre e fecha o menu ao clicar no ícone
+      btnFiltro.addEventListener('click', () => {
+        menuTags.classList.toggle('hidden');
+      });
+
+      // Fechar o menu se clicar fora dele
+      window.addEventListener('click', (e) => {
+        if (!btnFiltro.contains(e.target) && !menuTags.contains(e.target)) {
+          menuTags.classList.add('hidden');
+        }
+      });
+
+      const gridDestino = document.querySelector('#tab-status-confirmacao .custom-scroll');
+
+      function acaoCard(botao, tipo) {
+        const card = botao.closest('.banner-item'); 
+        if (!card) return;
+
+        // Trava botões (lógica visual)
+        const btnLike = card.querySelector('.btn-like');
+        const btnDislike = card.querySelector('.btn-dislike');
+
+        btnLike.removeAttribute('onclick');
+        btnDislike.removeAttribute('onclick');
+
+        if (tipo === 'like') {
+          estilizarBotao(btnDislike, 'desativado');
+          estilizarBotao(btnLike, 'ativo-verde');
+        } else {
+          estilizarBotao(btnLike, 'desativado');
+          estilizarBotao(btnDislike, 'ativo-vermelho');
+        }
+
+        // Animação de saída
+        card.style.transition = 'all 0.3s ease';
+        card.style.opacity = '0';
+        card.style.transform = 'scale(0.95)';
+
+        setTimeout(() => {
+          // 1. Move o card
+          gridDestino.appendChild(card);
+          
+          // 2. TROCA O BOTÃO WHATSAPP PELO "ENVIADO"
+          const btnWhats = card.querySelector('.btn-whatsapp');
+          if (btnWhats) {
+            // Substitui o HTML do botão antigo pelo novo que você pediu
+            btnWhats.outerHTML = `
+              <button class="flex items-center justify-center bg-neutral-500 text-white px-3 py-2 gap-1 rounded-md cursor-default opacity-80">
+                  <span class="text-xs">Enviado</span>
+                  <i class="ph-fill ph-check-fat"></i>
+              </button>
+            `;
+          }
+
+          if (tipo === 'like') {
+              const nomeLead = card.querySelector('h1');
+              
+              // Verifica se já não tem o fogo para não duplicar
+              if (nomeLead && !nomeLead.querySelector('.icone-fogo')) {
+                  nomeLead.insertAdjacentHTML('beforeend', `
+                      <img class="absolute top-1 left-[53%] w-5" src="chama.png" alt="">
+                  `);
+              }
+          }
+
+          // 3. Restaura visual
+          card.style.opacity = '1';
+          card.style.transform = 'scale(1)';
+
+          verificarLeadsVazios();
+        }, 300);
+      }
+
+      function estilizarBotao(btn, estado) {
+        if (estado === 'desativado') {
+          btn.classList.add('opacity-30', 'cursor-not-allowed');
+          btn.classList.remove('hover:scale-[105%]');
+        } 
+        // Adicionei logica para manter a cor viva se foi o escolhido, mas sem clique
+        else if (estado === 'ativo-verde') {
+          btn.classList.add('cursor-default');
+          btn.classList.remove('hover:scale-[105%]');
+        }
+        else if (estado === 'ativo-vermelho') {
+          btn.classList.add('cursor-default');
+          btn.classList.remove('hover:scale-[105%]');
+        }
+      }
+
+      let filtroTagAtivo = 'all';
+
+      botoesFiltro.forEach(botao => {
+        botao.addEventListener('click', () => {
+          filtroTagAtivo = botao.getAttribute('data-filter');
+          
+          const inputBusca = document.querySelector('input[type="text"]');
+          const textoBusca = inputBusca ? inputBusca.value : '';
+          
+          filtrarLeads(textoBusca);
+          menuTags.classList.add('hidden');
+        });
+      });
+
+      function filtrarLeads(textoDigitado) {
+        const termo = textoDigitado.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+        
+        const todosCards = document.querySelectorAll('.banner-item');
+
+        todosCards.forEach(card => {
+          const h1 = card.querySelector('h1');
+          const tagDoBanner = card.getAttribute('data-tag');
+          
+          if (!h1) return;
+
+          const nomeLead = h1.textContent.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+
+          const passaNaBusca = termo === '' || nomeLead.includes(termo);
+          const passaNaTag = filtroTagAtivo === 'all' || tagDoBanner === filtroTagAtivo;
+
+          if (passaNaBusca && passaNaTag) {
+            card.style.display = 'block'; 
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        verificarLeadsVazios();
+      }
+
+      function verificarLeadsVazios() {
+        // Verifica aba de Leads Pendentes
+        const gridPendentes = document.querySelector('#tab-leads-pendentes .custom-scroll');
+        const cardsPendentesVisiveis = Array.from(gridPendentes.querySelectorAll('.banner-item')).filter(card => card.style.display !== 'none');
+        const mensagemPendentes = document.getElementById('mensagem-vazia-pendentes');
+        
+        if (cardsPendentesVisiveis.length === 0) {
+          gridPendentes.classList.add('hidden');
+          mensagemPendentes.classList.remove('hidden');
+        } else {
+          gridPendentes.classList.remove('hidden');
+          mensagemPendentes.classList.add('hidden');
+        }
+
+        // Verifica aba de Status Confirmação
+        const gridConfirmacao = document.querySelector('#tab-status-confirmacao .custom-scroll');
+        const cardsConfirmacaoVisiveis = Array.from(gridConfirmacao.querySelectorAll('.banner-item')).filter(card => card.style.display !== 'none');
+        const mensagemConfirmacao = document.getElementById('mensagem-vazia-confirmacao');
+        
+        if (cardsConfirmacaoVisiveis.length === 0) {
+          gridConfirmacao.classList.add('hidden');
+          mensagemConfirmacao.classList.remove('hidden');
+        } else {
+          gridConfirmacao.classList.remove('hidden');
+          mensagemConfirmacao.classList.add('hidden');
+        }
+      }
+
+      // --- LÓGICA DO TOAST DE BOAS-VINDAS ---
+
+    const toastElement = document.getElementById('welcome-toast');
+    const checkboxDontShow = document.getElementById('dont-show-again');
+
+    // 1. Verifica ao carregar a página se deve mostrar
+    window.addEventListener('DOMContentLoaded', () => {
+      // Verifica se existe o registro no localStorage
+      const userPrefersHidden = localStorage.getItem('hideWelcomeToast');
+
+      if (!userPrefersHidden) {
+        // Se NÃO tiver registro, mostra o toast com um pequeno delay para ser elegante
+        setTimeout(() => {
+          showToast();
+        }, 1000);
+      }
+    });
+
+    function showToast() {
+      // Remove o display: none
+      toastElement.classList.remove('hidden');
+      
+      // Pequeno timeout para permitir que o navegador renderize antes de animar
+      setTimeout(() => {
+        toastElement.classList.remove('translate-y-10', 'opacity-0');
+      }, 10);
+    }
+
+    function closeToast() {
+      // 1. Verifica se o checkbox "Não mostrar novamente" está marcado
+      if (checkboxDontShow.checked) {
+        // Salva no navegador do usuário
+        localStorage.setItem('hideWelcomeToast', 'true');
+      }
+
+      // 2. Anima a saída
+      toastElement.classList.add('translate-y-10', 'opacity-0');
+
+      // 3. Depois da animação (500ms), coloca o display: none
+      setTimeout(() => {
+        toastElement.classList.add('hidden');
+      }, 500);
+    }
+
+      verificarLeadsVazios();
+    </script>
+
+  </body>
+</html>
