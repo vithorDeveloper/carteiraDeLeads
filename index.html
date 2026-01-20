@@ -90,6 +90,16 @@
         <button class="block w-full text-left px-2 py-1 hover:bg-neutral-100 text-sm" data-filter="crm">CRM</button>
         <button class="block w-full text-left px-2 py-1 hover:bg-neutral-100 text-sm" data-filter="montadora">Montadora</button>
         <button class="block w-full text-left px-2 py-1 hover:bg-neutral-100 text-sm" data-filter="cockpit">Cockpit</button>
+      
+        <hr class="filtro-status my-1 hidden border-stone-200">
+        
+        <button class="filtro-status hidden block w-full text-left px-2 py-1 hover:bg-green-50 text-green-700 font-semibold text-sm" data-filter="confirmado">
+          Confirmado <i class="ph-fill ph-check float-right mt-1"></i>
+        </button>
+        
+        <button class="filtro-status hidden block w-full text-left px-2 py-1 hover:bg-red-50 text-red-700 font-semibold text-sm" data-filter="declinado">
+          Declinado <i class="ph-fill ph-x float-right mt-1"></i>
+        </button>
       </div>
     </div>
 
@@ -576,14 +586,12 @@
       const tabStatusConfirmacao = document.getElementById('tab-status-confirmacao');
 
       function selectTab(index) {
-        // Lógica do movimento da barra
         if (index === 0) {
           bgSlider.style.transform = 'translateX(0px)';
         } else {
           bgSlider.style.transform = 'translateX(calc(100% + 0.1rem))';
         }
 
-        // Atualiza as cores dos botões
         buttons.forEach((btn, i) => {
           if (i === index) {
             btn.classList.remove('text-stone-400');
@@ -594,13 +602,20 @@
           }
         });
 
-        // Controla a visibilidade das abas
         if (index === 0) {
+          // Aba Pendentes
           tabLeadsPendentes.classList.remove('hidden');
           tabStatusConfirmacao.classList.add('hidden');
+          
+          // ESCONDE as opções "Confirmado/Declinado" do menu
+          document.querySelectorAll('.filtro-status').forEach(el => el.classList.add('hidden'));
         } else {
+          // Aba Status Confirmação
           tabLeadsPendentes.classList.add('hidden');
           tabStatusConfirmacao.classList.remove('hidden');
+          
+          // MOSTRA as opções "Confirmado/Declinado" no menu (junto das outras)
+          document.querySelectorAll('.filtro-status').forEach(el => el.classList.remove('hidden'));
         }
       }
 
@@ -623,64 +638,62 @@
 
       const gridDestino = document.querySelector('#tab-status-confirmacao .custom-scroll');
 
-      function acaoCard(botao, tipo) {
-        const card = botao.closest('.banner-item'); 
-        if (!card) return;
+     function acaoCard(botao, tipo) {
+      const card = botao.closest('.banner-item'); 
+      if (!card) return;
 
-        // Trava botões (lógica visual)
-        const btnLike = card.querySelector('.btn-like');
-        const btnDislike = card.querySelector('.btn-dislike');
+      const btnLike = card.querySelector('.btn-like');
+      const btnDislike = card.querySelector('.btn-dislike');
 
-        btnLike.removeAttribute('onclick');
-        btnDislike.removeAttribute('onclick');
+      btnLike.removeAttribute('onclick');
+      btnDislike.removeAttribute('onclick');
 
-        if (tipo === 'like') {
-          estilizarBotao(btnDislike, 'desativado');
-          estilizarBotao(btnLike, 'ativo-verde');
-        } else {
-          estilizarBotao(btnLike, 'desativado');
-          estilizarBotao(btnDislike, 'ativo-vermelho');
+      if (tipo === 'like') {
+        estilizarBotao(btnDislike, 'desativado');
+        estilizarBotao(btnLike, 'ativo-verde');
+        
+        // Adiciona STATUS 'confirmado' (sem apagar a tag original)
+        card.setAttribute('data-status', 'confirmado');
+      } else {
+        estilizarBotao(btnLike, 'desativado');
+        estilizarBotao(btnDislike, 'ativo-vermelho');
+        
+        // Adiciona STATUS 'declinado'
+        card.setAttribute('data-status', 'declinado');
+      }
+
+      card.style.transition = 'all 0.3s ease';
+      card.style.opacity = '0';
+      card.style.transform = 'scale(0.95)';
+
+      setTimeout(() => {
+        gridDestino.appendChild(card);
+        
+        const btnWhats = card.querySelector('.btn-whatsapp');
+        if (btnWhats) {
+           btnWhats.outerHTML = `
+             <button class="flex items-center justify-center bg-neutral-500 text-white px-3 py-2 gap-1 rounded-md cursor-default opacity-80">
+                <span class="text-xs">Enviado</span>
+                <i class="ph-fill ph-check-fat"></i>
+             </button>
+           `;
         }
 
-        // Animação de saída
-        card.style.transition = 'all 0.3s ease';
-        card.style.opacity = '0';
-        card.style.transform = 'scale(0.95)';
+        if (tipo === 'like') {
+            const nomeLead = card.querySelector('h1');
+            if (nomeLead && !nomeLead.querySelector('.icone-fogo')) {
+                nomeLead.insertAdjacentHTML('beforeend', `
+                    <img src="chama.png" alt="Hot" class="icone-fogo absolute top-2 left-[53%] w-5 animate-pulse">
+                `);
+            }
+        }
 
-        setTimeout(() => {
-          // 1. Move o card
-          gridDestino.appendChild(card);
-          
-          // 2. TROCA O BOTÃO WHATSAPP PELO "ENVIADO"
-          const btnWhats = card.querySelector('.btn-whatsapp');
-          if (btnWhats) {
-            // Substitui o HTML do botão antigo pelo novo que você pediu
-            btnWhats.outerHTML = `
-              <button class="flex items-center justify-center bg-neutral-500 text-white px-3 py-2 gap-1 rounded-md cursor-default opacity-80">
-                  <span class="text-xs">Enviado</span>
-                  <i class="ph-fill ph-check-fat"></i>
-              </button>
-            `;
-          }
+        card.style.opacity = '1';
+        card.style.transform = 'scale(1)';
 
-          if (tipo === 'like') {
-              const nomeLead = card.querySelector('h1');
-              
-              // Verifica se já não tem o fogo para não duplicar
-              if (nomeLead && !nomeLead.querySelector('.icone-fogo')) {
-                  nomeLead.insertAdjacentHTML('beforeend', `
-                      <img class="absolute top-1 left-[53%] w-5" src="chama.png" alt="">
-                  `);
-              }
-          }
-
-          // 3. Restaura visual
-          card.style.opacity = '1';
-          card.style.transform = 'scale(1)';
-
-          verificarLeadsVazios();
-        }, 300);
-      }
+        verificarLeadsVazios()
+      }, 300);
+    }
 
       function estilizarBotao(btn, estado) {
 
@@ -707,13 +720,27 @@
 
       botoesFiltro.forEach(botao => {
         botao.addEventListener('click', () => {
-          filtroTagAtivo = botao.getAttribute('data-filter');
-          
-          const inputBusca = document.querySelector('input[type="text"]');
-          const textoBusca = inputBusca ? inputBusca.value : '';
-          
-          filtrarLeads(textoBusca);
+          const filtroSelecionado = botao.getAttribute('data-filter');
+
+          banners.forEach(banner => {
+            // Verifica a Tag original (ex: prospector)
+            const tagDoBanner = banner.getAttribute('data-tag');
+            // Verifica o Status novo (ex: confirmado)
+            const statusDoBanner = banner.getAttribute('data-status');
+
+            // Mostra se for "all" OU se bater a Tag OU se bater o Status
+            if (filtroSelecionado === 'all' || 
+                tagDoBanner === filtroSelecionado || 
+                statusDoBanner === filtroSelecionado) {
+              banner.style.display = 'block'; 
+            } else {
+              banner.style.display = 'none';
+            }
+          });
           menuTags.classList.add('hidden');
+          
+          // Limpa a barra de pesquisa para não confundir
+          document.querySelector('input[type="text"]').value = '';
         });
       });
 
