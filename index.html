@@ -683,9 +683,14 @@
       }
 
       function estilizarBotao(btn, estado) {
+
+        const icone = btn.querySelector('i');
+
         if (estado === 'desativado') {
-          btn.classList.add('opacity-30', 'cursor-not-allowed');
-          btn.classList.remove('hover:scale-[105%]');
+          btn.classList.remove('hover:scale-[105%]', 'bg-red-600/20', 'bg-lime-400/20');
+          btn.classList.add('opacity-30', 'bg-neutral-300', 'cursor-not-allowed');
+          icone.classList.remove('text-lime-600', 'text-red-600');
+          icone.classList.add('text-neutral-400');
         } 
         // Adicionei logica para manter a cor viva se foi o escolhido, mas sem clique
         else if (estado === 'ativo-verde') {
