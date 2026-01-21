@@ -3,17 +3,16 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/logo-SD.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
-    <title>Banner</title>
+    <title>Meus Leads</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   </head>
-
-  <script src="https://cdn.tailwindcss.com"></script>
 
     <script>
       tailwind.config = {
@@ -46,10 +45,11 @@
         background-color: #78716c;
       }
     </style>
+  </head>
 
-  <body class="bg-[#f7f7f7] w-full h-screen overflow-hidden flex flex-col md:w-[85%] md:mx-auto lg:w-[70%]">
+  <body class="bg-[#f7f7f7] w-full h-screen flex flex-col md:w-[85%] md:mx-auto lg:w-[70%]">
 
-    <header class="flex items-center justify-between w-[95%] mx-auto pb-6 pt-8 flex-shrink-0">
+    <header class="flex items-center justify-between w-[95%] mx-auto pb-6 pt-8 flex-shrink-0 min-[1400px]:py-4">
 
       <h1 class="font-bold text-2xl">Meus Leads</h1>
       <i class="ph-fill ph-x-square text-3xl text-red-600 hover:text-black"></i>
@@ -103,7 +103,22 @@
       </div>
     </div>
 
-      <div id="tab-leads-pendentes" class="w-[95%] mx-auto p-1 rounded-2xl flex-1 overflow-hidden mb-4">
+      <div id="tab-leads-pendentes" class="w-[95%] mx-auto p-1 rounded-2xl flex-1 min-h-0 mb-4 relative group/pagination">
+
+        <!-- Botões de Paginação (Só aparecem em telas >= 1400px) -->
+        <div id="paginacao-pendentes" class="hidden min-[1400px]:flex flex-col justify-between absolute -right-12 top-10 bottom-10 z-20">
+          <button onclick="mudarPagina('pendentes', -1)" class="btn-prev px-2 py-1 bg-white rounded-lg shadow-md text-stone-600 hover:bg-stone-100 disabled:opacity-30 disabled:cursor-not-allowed transition-all">
+            <i class="ph-bold ph-caret-up text-xl"></i>
+          </button>
+
+          <div class="relative w-1.5 flex-1 mx-auto my-2 bg-stone-200 rounded-full overflow-hidden">
+            <div class="barra-indicadora absolute top-0 left-0 w-full bg-stone-400 transition-all duration-300 rounded-full"></div>
+          </div>
+
+          <button onclick="mudarPagina('pendentes', 1)" class="btn-next px-2 py-1 bg-white rounded-lg shadow-md text-stone-600 hover:bg-stone-100 disabled:opacity-30 disabled:cursor-not-allowed transition-all">
+            <i class="ph-bold ph-caret-down text-xl"></i>
+          </button>
+        </div>
 
         <div id="mensagem-vazia-pendentes" class="hidden h-full flex items-center justify-center">
           <div class="text-center">
@@ -113,8 +128,8 @@
           </div>
         </div>
 
-        <div class="h-full overflow-y-auto custom-scroll grid grid-cols-1 min-[1400px]:grid-cols-2 min-[1400px]:gap-x-4 gap-2 content-start">
-          <div class="banner-item relative w-full h-[8rem] bg-white rounded-2xl rounded-tr-none overflow-hidden pt-2 pb-4 pl-3 flex-shrink-0 md:pl-6 md:pr-3" data-tag="prospector">
+        <div class="h-full overflow-y-auto custom-scroll min-[1400px]:overflow-hidden grid grid-cols-1 min-[1400px]:grid-cols-2 min-[1400px]:gap-x-4 gap-2 content-start">
+          <div class="banner-item relative w-full h-[8rem] min-[1400px]:h-[7.7rem] bg-white rounded-2xl rounded-tr-none overflow-hidden pt-2 pb-4 pl-3 flex-shrink-0 md:pl-6 md:pr-3" data-tag="prospector">
       
             <div class="absolute top-0 right-0 w-[8rem] h-10 bg-[#f7f7f7] rounded-bl-[1.2rem] z-10 flex justify-center items-center">
               
@@ -164,7 +179,7 @@
             </section>
       
           </div>
-          <div class="banner-item relative w-full h-[8rem] bg-white rounded-2xl rounded-tr-none overflow-hidden pt-2 pb-4 pl-3 flex-shrink-0 md:pl-6 md:pr-3" data-tag="cockpit">
+          <div class="banner-item relative w-full h-[8rem] min-[1400px]:h-[7.7rem] bg-white rounded-2xl rounded-tr-none overflow-hidden pt-2 pb-4 pl-3 flex-shrink-0 md:pl-6 md:pr-3" data-tag="cockpit">
       
             <div class="absolute top-0 right-0 w-[8rem] h-10 bg-[#f7f7f7] rounded-bl-[1.2rem] z-10 flex justify-center items-center">
               
@@ -190,7 +205,7 @@
                     <button class="btn-whatsapp flex items-center justify-center bg-neutral-500 text-white px-3 py-2 gap-1 rounded-md hover:bg-neutral-200 hover:text-black">
                       <i class="fa-brands fa-whatsapp"></i><span class="text-xs">WhatsApp</span>
                     </button>
-                    <button class="flex items-center ju stify-center bg-neutral-500 text-white px-3 gap-1 rounded-md hover:bg-neutral-200 hover:text-black">
+                    <button class="flex items-center justify-center bg-neutral-500 text-white px-3 gap-1 rounded-md hover:bg-neutral-200 hover:text-black">
                       <i class="fa-solid fa-phone text-xs"></i><span class="text-xs">Telefone</span>
                     </button>
                   </div>
@@ -214,7 +229,7 @@
             </section>
       
           </div>
-          <div class="banner-item relative w-full h-[8rem] bg-white rounded-2xl rounded-tr-none overflow-hidden pt-2 pb-4 pl-3 flex-shrink-0 md:pl-6 md:pr-3" data-tag="montadora">
+          <div class="banner-item relative w-full h-[8rem] min-[1400px]:h-[7.7rem] bg-white rounded-2xl rounded-tr-none overflow-hidden pt-2 pb-4 pl-3 flex-shrink-0 md:pl-6 md:pr-3" data-tag="montadora">
       
             <div class="absolute top-0 right-0 w-[8rem] h-10 bg-[#f7f7f7] rounded-bl-[1.2rem] z-10 flex justify-center items-center">
               
@@ -264,7 +279,7 @@
             </section>
       
           </div>
-          <div class="banner-item relative w-full h-[8rem] bg-white rounded-2xl rounded-tr-none overflow-hidden pt-2 pb-4 pl-3 flex-shrink-0 md:pl-6 md:pr-3" data-tag="crm">
+          <div class="banner-item relative w-full h-[8rem] min-[1400px]:h-[7.7rem] bg-white rounded-2xl rounded-tr-none overflow-hidden pt-2 pb-4 pl-3 flex-shrink-0 md:pl-6 md:pr-3" data-tag="crm">
       
             <div class="absolute top-0 right-0 w-[8rem] h-10 bg-[#f7f7f7] rounded-bl-[1.2rem] z-10 flex justify-center items-center">
               
@@ -314,7 +329,7 @@
             </section>
       
           </div>
-          <div class="banner-item relative w-full h-[8rem] bg-white rounded-2xl rounded-tr-none overflow-hidden pt-2 pb-4 pl-3 flex-shrink-0 md:pl-6 md:pr-3" data-tag="prospector">
+          <div class="banner-item relative w-full h-[8rem] min-[1400px]:h-[7.7rem] bg-white rounded-2xl rounded-tr-none overflow-hidden pt-2 pb-4 pl-3 flex-shrink-0 md:pl-6 md:pr-3" data-tag="prospector">
       
             <div class="absolute top-0 right-0 w-[8rem] h-10 bg-[#f7f7f7] rounded-bl-[1.2rem] z-10 flex justify-center items-center">
               
@@ -364,7 +379,7 @@
             </section>
       
           </div>
-          <div class="banner-item relative w-full h-[8rem] bg-white rounded-2xl rounded-tr-none overflow-hidden pt-2 pb-4 pl-3 flex-shrink-0 md:pl-6 md:pr-3" data-tag="cockpit">
+          <div class="banner-item relative w-full h-[8rem] min-[1400px]:h-[7.7rem] bg-white rounded-2xl rounded-tr-none overflow-hidden pt-2 pb-4 pl-3 flex-shrink-0 md:pl-6 md:pr-3" data-tag="cockpit">
       
             <div class="absolute top-0 right-0 w-[8rem] h-10 bg-[#f7f7f7] rounded-bl-[1.2rem] z-10 flex justify-center items-center">
               
@@ -414,7 +429,7 @@
             </section>
       
           </div>
-          <div class="banner-item relative w-full h-[8rem] bg-white rounded-2xl rounded-tr-none overflow-hidden pt-2 pb-4 pl-3 flex-shrink-0 md:pl-6 md:pr-3" data-tag="montadora">
+          <div class="banner-item relative w-full h-[8rem] min-[1400px]:h-[7.7rem] bg-white rounded-2xl rounded-tr-none overflow-hidden pt-2 pb-4 pl-3 flex-shrink-0 md:pl-6 md:pr-3" data-tag="montadora">
       
             <div class="absolute top-0 right-0 w-[8rem] h-10 bg-[#f7f7f7] rounded-bl-[1.2rem] z-10 flex justify-center items-center">
               
@@ -464,7 +479,7 @@
             </section>
       
           </div>
-          <div class="banner-item relative w-full h-[8rem] bg-white rounded-2xl rounded-tr-none overflow-hidden pt-2 pb-4 pl-3 flex-shrink-0 md:pl-6 md:pr-3" data-tag="crm">
+          <div class="banner-item relative w-full h-[8rem] min-[1400px]:h-[7.7rem] bg-white rounded-2xl rounded-tr-none overflow-hidden pt-2 pb-4 pl-3 flex-shrink-0 md:pl-6 md:pr-3" data-tag="crm">
       
             <div class="absolute top-0 right-0 w-[8rem] h-10 bg-[#f7f7f7] rounded-bl-[1.2rem] z-10 flex justify-center items-center">
               
@@ -481,6 +496,256 @@
             <section class="h-full flex flex-col justify-between">
       
               <h1 class="font-bold truncate w-[51%] text-lg text-stone-600">Alexandre Carvalho Rodrigues de lima</h1>
+      
+              <div class="flex justify-between">
+                <div class="flex flex-col">
+                  <p class="font-medium leading-7 text-stone-600 text-sm">Contatar por:</p>
+        
+                  <div class="flex gap-2">
+                    <button class="btn-whatsapp flex items-center justify-center bg-neutral-500 text-white px-3 py-2 gap-1 rounded-md hover:bg-neutral-200 hover:text-black">
+                      <i class="fa-brands fa-whatsapp"></i><span class="text-xs">WhatsApp</span>
+                    </button>
+                    <button class="flex items-center justify-center bg-neutral-500 text-white px-3 gap-1 rounded-md hover:bg-neutral-200 hover:text-black">
+                      <i class="fa-solid fa-phone text-xs"></i><span class="text-xs">Telefone</span>
+                    </button>
+                  </div>
+                </div>
+      
+                <div class="flex flex-col pr-3">
+                  <p class="font-medium leading-7 text-stone-600 text-sm">Presença:</p>
+        
+                  <div class="flex gap-3">
+                    <button onclick="acaoCard(this, 'like')" class="btn-like flex items-center justify-center text-white px-3 py-1 hover:scale-[105%] rounded-md bg-lime-400/20">
+                      <i class="ph-fill ph-thumbs-up text-xl text-lime-600"></i>
+                    </button>
+                    <button onclick="acaoCard(this, 'dislike')" class="btn-dislike flex items-center justify-center text-white px-3 hover:scale-[105%] rounded-md bg-red-600/20">
+                     <i class="ph-fill ph-thumbs-down text-xl text-red-600"></i>
+                    </button>
+                  </div>
+                </div>
+        
+              </div>
+      
+            </section>
+      
+          </div>
+          <div class="banner-item relative w-full h-[8rem] min-[1400px]:h-[7.7rem] bg-white rounded-2xl rounded-tr-none overflow-hidden pt-2 pb-4 pl-3 flex-shrink-0 md:pl-6 md:pr-3" data-tag="crm">
+      
+            <div class="absolute top-0 right-0 w-[8rem] h-10 bg-[#f7f7f7] rounded-bl-[1.2rem] z-10 flex justify-center items-center">
+              
+              <div class="absolute top-0 -left-8 w-8 h-8 bg-transparent rounded-tr-2xl shadow-[15px_-15px_0_0_#f7f7f7]"></div>
+              
+              <div class="absolute -bottom-8 right-0 w-8 h-8 bg-transparent rounded-tr-3xl shadow-[10px_-10px_0_0_#f7f7f7]"></div>
+              
+              <div class="bg-[#C88719] w-[6.5rem] text-white mx-auto text-center text-[9px] font-bold py-1 mb-1 rounded-full uppercase tracking-wider shadow-sm z-10">
+                <p>crm interno</p>
+              </div>
+              
+            </div>
+      
+            <section class="h-full flex flex-col justify-between">
+      
+              <h1 class="font-bold truncate w-[51%] text-lg text-stone-600">Alexandre Carvalho Rodrigues de lima</h1>
+      
+              <div class="flex justify-between">
+                <div class="flex flex-col">
+                  <p class="font-medium leading-7 text-stone-600 text-sm">Contatar por:</p>
+        
+                  <div class="flex gap-2">
+                    <button class="btn-whatsapp flex items-center justify-center bg-neutral-500 text-white px-3 py-2 gap-1 rounded-md hover:bg-neutral-200 hover:text-black">
+                      <i class="fa-brands fa-whatsapp"></i><span class="text-xs">WhatsApp</span>
+                    </button>
+                    <button class="flex items-center justify-center bg-neutral-500 text-white px-3 gap-1 rounded-md hover:bg-neutral-200 hover:text-black">
+                      <i class="fa-solid fa-phone text-xs"></i><span class="text-xs">Telefone</span>
+                    </button>
+                  </div>
+                </div>
+      
+                <div class="flex flex-col pr-3">
+                  <p class="font-medium leading-7 text-stone-600 text-sm">Presença:</p>
+        
+                  <div class="flex gap-3">
+                    <button onclick="acaoCard(this, 'like')" class="btn-like flex items-center justify-center text-white px-3 py-1 hover:scale-[105%] rounded-md bg-lime-400/20">
+                      <i class="ph-fill ph-thumbs-up text-xl text-lime-600"></i>
+                    </button>
+                    <button onclick="acaoCard(this, 'dislike')" class="btn-dislike flex items-center justify-center text-white px-3 hover:scale-[105%] rounded-md bg-red-600/20">
+                     <i class="ph-fill ph-thumbs-down text-xl text-red-600"></i>
+                    </button>
+                  </div>
+                </div>
+        
+              </div>
+      
+            </section>
+      
+          </div>
+          <div class="banner-item relative w-full h-[8rem] min-[1400px]:h-[7.7rem] bg-white rounded-2xl rounded-tr-none overflow-hidden pt-2 pb-4 pl-3 flex-shrink-0 md:pl-6 md:pr-3" data-tag="montadora">
+      
+            <div class="absolute top-0 right-0 w-[8rem] h-10 bg-[#f7f7f7] rounded-bl-[1.2rem] z-10 flex justify-center items-center">
+              
+              <div class="absolute top-0 -left-8 w-8 h-8 bg-transparent rounded-tr-2xl shadow-[15px_-15px_0_0_#f7f7f7]"></div>
+              
+              <div class="absolute -bottom-8 right-0 w-8 h-8 bg-transparent rounded-tr-3xl shadow-[10px_-10px_0_0_#f7f7f7]"></div>
+              
+              <div class="bg-[#003400] w-[6.5rem] text-white mx-auto text-center text-[9px] font-bold py-1 mb-1 rounded-full uppercase tracking-wider shadow-sm z-10">
+                <p>Montadora</p>
+              </div>
+              
+            </div>
+      
+            <section class="h-full flex flex-col justify-between">
+      
+              <h1 class="font-bold truncate w-[51%] text-lg text-stone-600">Rosona Vieira da Silva lima Oliveira</h1>
+      
+              <div class="flex justify-between">
+                <div class="flex flex-col">
+                  <p class="font-medium leading-7 text-stone-600 text-sm">Contatar por:</p>
+        
+                  <div class="flex gap-2">
+                    <button class="btn-whatsapp flex items-center justify-center bg-neutral-500 text-white px-3 py-2 gap-1 rounded-md hover:bg-neutral-200 hover:text-black">
+                      <i class="fa-brands fa-whatsapp"></i><span class="text-xs">WhatsApp</span>
+                    </button>
+                    <button class="flex items-center justify-center bg-neutral-500 text-white px-3 gap-1 rounded-md hover:bg-neutral-200 hover:text-black">
+                      <i class="fa-solid fa-phone text-xs"></i><span class="text-xs">Telefone</span>
+                    </button>
+                  </div>
+                </div>
+      
+                <div class="flex flex-col pr-3">
+                  <p class="font-medium leading-7 text-stone-600 text-sm">Presença:</p>
+        
+                  <div class="flex gap-3">
+                    <button onclick="acaoCard(this, 'like')" class="btn-like flex items-center justify-center text-white px-3 py-1 hover:scale-[105%] rounded-md bg-lime-400/20">
+                      <i class="ph-fill ph-thumbs-up text-xl text-lime-600"></i>
+                    </button>
+                    <button onclick="acaoCard(this, 'dislike')" class="btn-dislike flex items-center justify-center text-white px-3 hover:scale-[105%] rounded-md bg-red-600/20">
+                     <i class="ph-fill ph-thumbs-down text-xl text-red-600"></i>
+                    </button>
+                  </div>
+                </div>
+        
+              </div>
+      
+            </section>
+      
+          </div>
+          <div class="banner-item relative w-full h-[8rem] min-[1400px]:h-[7.7rem] bg-white rounded-2xl rounded-tr-none overflow-hidden pt-2 pb-4 pl-3 flex-shrink-0 md:pl-6 md:pr-3" data-tag="cockpit">
+      
+            <div class="absolute top-0 right-0 w-[8rem] h-10 bg-[#f7f7f7] rounded-bl-[1.2rem] z-10 flex justify-center items-center">
+              
+              <div class="absolute top-0 -left-8 w-8 h-8 bg-transparent rounded-tr-2xl shadow-[15px_-15px_0_0_#f7f7f7]"></div>
+              
+              <div class="absolute -bottom-8 right-0 w-8 h-8 bg-transparent rounded-tr-3xl shadow-[10px_-10px_0_0_#f7f7f7]"></div>
+              
+              <div class="bg-[#BF360C] w-[6.5rem] text-white mx-auto text-center text-[9px] font-bold py-1 mb-1 rounded-full uppercase tracking-wider shadow-sm z-10">
+                <p>Cockpit</p>
+              </div>
+              
+            </div>
+      
+            <section class="h-full flex flex-col justify-between">
+      
+              <h1 class="font-bold truncate w-[51%] text-lg text-stone-600">Rodinei Pedro dos Santos Candido</h1>
+      
+              <div class="flex justify-between">
+                <div class="flex flex-col">
+                  <p class="font-medium leading-7 text-stone-600 text-sm">Contatar por:</p>
+        
+                  <div class="flex gap-2">
+                    <button class="btn-whatsapp flex items-center justify-center bg-neutral-500 text-white px-3 py-2 gap-1 rounded-md hover:bg-neutral-200 hover:text-black">
+                      <i class="fa-brands fa-whatsapp"></i><span class="text-xs">WhatsApp</span>
+                    </button>
+                    <button class="flex items-center justify-center bg-neutral-500 text-white px-3 gap-1 rounded-md hover:bg-neutral-200 hover:text-black">
+                      <i class="fa-solid fa-phone text-xs"></i><span class="text-xs">Telefone</span>
+                    </button>
+                  </div>
+                </div>
+      
+                <div class="flex flex-col pr-3">
+                  <p class="font-medium leading-7 text-stone-600 text-sm">Presença:</p>
+        
+                  <div class="flex gap-3">
+                    <button onclick="acaoCard(this, 'like')" class="btn-like flex items-center justify-center text-white px-3 py-1 hover:scale-[105%] rounded-md bg-lime-400/20">
+                      <i class="ph-fill ph-thumbs-up text-xl text-lime-600"></i>
+                    </button>
+                    <button onclick="acaoCard(this, 'dislike')" class="btn-dislike flex items-center justify-center text-white px-3 hover:scale-[105%] rounded-md bg-red-600/20">
+                     <i class="ph-fill ph-thumbs-down text-xl text-red-600"></i>
+                    </button>
+                  </div>
+                </div>
+        
+              </div>
+      
+            </section>
+      
+          </div>
+          <div class="banner-item relative w-full h-[8rem] min-[1400px]:h-[7.7rem] bg-white rounded-2xl rounded-tr-none overflow-hidden pt-2 pb-4 pl-3 flex-shrink-0 md:pl-6 md:pr-3" data-tag="crm">
+      
+            <div class="absolute top-0 right-0 w-[8rem] h-10 bg-[#f7f7f7] rounded-bl-[1.2rem] z-10 flex justify-center items-center">
+              
+              <div class="absolute top-0 -left-8 w-8 h-8 bg-transparent rounded-tr-2xl shadow-[15px_-15px_0_0_#f7f7f7]"></div>
+              
+              <div class="absolute -bottom-8 right-0 w-8 h-8 bg-transparent rounded-tr-3xl shadow-[10px_-10px_0_0_#f7f7f7]"></div>
+              
+              <div class="bg-[#C88719] w-[6.5rem] text-white mx-auto text-center text-[9px] font-bold py-1 mb-1 rounded-full uppercase tracking-wider shadow-sm z-10">
+                <p>crm interno</p>
+              </div>
+              
+            </div>
+      
+            <section class="h-full flex flex-col justify-between">
+      
+              <h1 class="font-bold truncate w-[51%] text-lg text-stone-600">Alexandre Carvalho Rodrigues de lima</h1>
+      
+              <div class="flex justify-between">
+                <div class="flex flex-col">
+                  <p class="font-medium leading-7 text-stone-600 text-sm">Contatar por:</p>
+        
+                  <div class="flex gap-2">
+                    <button class="btn-whatsapp flex items-center justify-center bg-neutral-500 text-white px-3 py-2 gap-1 rounded-md hover:bg-neutral-200 hover:text-black">
+                      <i class="fa-brands fa-whatsapp"></i><span class="text-xs">WhatsApp</span>
+                    </button>
+                    <button class="flex items-center justify-center bg-neutral-500 text-white px-3 gap-1 rounded-md hover:bg-neutral-200 hover:text-black">
+                      <i class="fa-solid fa-phone text-xs"></i><span class="text-xs">Telefone</span>
+                    </button>
+                  </div>
+                </div>
+      
+                <div class="flex flex-col pr-3">
+                  <p class="font-medium leading-7 text-stone-600 text-sm">Presença:</p>
+        
+                  <div class="flex gap-3">
+                    <button onclick="acaoCard(this, 'like')" class="btn-like flex items-center justify-center text-white px-3 py-1 hover:scale-[105%] rounded-md bg-lime-400/20">
+                      <i class="ph-fill ph-thumbs-up text-xl text-lime-600"></i>
+                    </button>
+                    <button onclick="acaoCard(this, 'dislike')" class="btn-dislike flex items-center justify-center text-white px-3 hover:scale-[105%] rounded-md bg-red-600/20">
+                     <i class="ph-fill ph-thumbs-down text-xl text-red-600"></i>
+                    </button>
+                  </div>
+                </div>
+        
+              </div>
+      
+            </section>
+      
+          </div>
+          <div class="banner-item relative w-full h-[8rem] min-[1400px]:h-[7.7rem] bg-white rounded-2xl rounded-tr-none overflow-hidden pt-2 pb-4 pl-3 flex-shrink-0 md:pl-6 md:pr-3" data-tag="cockpit">
+      
+            <div class="absolute top-0 right-0 w-[8rem] h-10 bg-[#f7f7f7] rounded-bl-[1.2rem] z-10 flex justify-center items-center">
+              
+              <div class="absolute top-0 -left-8 w-8 h-8 bg-transparent rounded-tr-2xl shadow-[15px_-15px_0_0_#f7f7f7]"></div>
+              
+              <div class="absolute -bottom-8 right-0 w-8 h-8 bg-transparent rounded-tr-3xl shadow-[10px_-10px_0_0_#f7f7f7]"></div>
+              
+              <div class="bg-[#BF360C] w-[6.5rem] text-white mx-auto text-center text-[9px] font-bold py-1 mb-1 rounded-full uppercase tracking-wider shadow-sm z-10">
+                <p>Cockpit</p>
+              </div>
+              
+            </div>
+      
+            <section class="h-full flex flex-col justify-between">
+      
+              <h1 class="font-bold truncate w-[51%] text-lg text-stone-600">Rodinei Pedro dos Santos Candido</h1>
       
               <div class="flex justify-between">
                 <div class="flex flex-col">
@@ -518,7 +783,22 @@
 
       </div>
 
-      <div id="tab-status-confirmacao" class=" hidden w-[95%] mx-auto p-1 rounded-2xl flex-1 overflow-hidden mb-4">
+      <div id="tab-status-confirmacao" class=" hidden w-[95%] mx-auto p-1 rounded-2xl flex-1 min-h-0 mb-4 relative group/pagination">
+
+        <!-- Botões de Paginação (Só aparecem em telas >= 1400px) -->
+        <div id="paginacao-confirmacao" class="hidden min-[1400px]:flex flex-col justify-between absolute -right-12 top-10 bottom-10 z-20">
+          <button onclick="mudarPagina('confirmacao', -1)" class="btn-prev px-2 py-1 bg-white rounded-lg shadow-md text-stone-600 hover:bg-stone-100 disabled:opacity-30 disabled:cursor-not-allowed transition-all">
+            <i class="ph-bold ph-caret-up text-xl"></i>
+          </button>
+
+          <div class="relative w-1.5 flex-1 mx-auto my-2 bg-stone-200 rounded-full overflow-hidden">
+            <div class="barra-indicadora absolute top-0 left-0 w-full bg-stone-400 transition-all duration-300 rounded-full"></div>
+          </div>
+
+          <button onclick="mudarPagina('confirmacao', 1)" class="btn-next px-2 py-1 bg-white rounded-lg shadow-md text-stone-600 hover:bg-stone-100 disabled:opacity-30 disabled:cursor-not-allowed transition-all">
+            <i class="ph-bold ph-caret-down text-xl"></i>
+          </button>
+        </div>
 
         <div id="mensagem-vazia-confirmacao" class="hidden h-full flex items-center justify-center">
           <div class="text-center">
@@ -528,7 +808,7 @@
           </div>
         </div>
 
-        <div class="h-full overflow-y-auto custom-scroll grid grid-cols-1 min-[1400px]:grid-cols-2 min-[1400px]:gap-x-4 gap-2 content-start">
+        <div class="h-full overflow-y-auto custom-scroll min-[1400px]:overflow-hidden grid grid-cols-1 min-[1400px]:grid-cols-2 min-[1400px]:gap-x-4 gap-2 content-start">
           
         </div>
 
@@ -585,6 +865,9 @@
       const tabLeadsPendentes = document.getElementById('tab-leads-pendentes');
       const tabStatusConfirmacao = document.getElementById('tab-status-confirmacao');
 
+      // Estado da Paginação
+      let paginaAtual = { pendentes: 1, confirmacao: 1 };
+
       function selectTab(index) {
         if (index === 0) {
           bgSlider.style.transform = 'translateX(0px)';
@@ -617,6 +900,9 @@
           // MOSTRA as opções "Confirmado/Declinado" no menu (junto das outras)
           document.querySelectorAll('.filtro-status').forEach(el => el.classList.remove('hidden'));
         }
+
+        // Recalcula a paginação ao trocar de aba
+        aplicarFiltrosEPaginacao();
       }
 
       const btnFiltro = document.getElementById('btn-filtro');
@@ -691,7 +977,7 @@
         card.style.opacity = '1';
         card.style.transform = 'scale(1)';
 
-        verificarLeadsVazios()
+        aplicarFiltrosEPaginacao(); // Atualiza a paginação após mover o card
       }, 300);
     }
 
@@ -718,6 +1004,7 @@
 
       let filtroTagAtivo = 'all';
 
+      // Atualiza os botões de filtro para usar a nova lógica centralizada
       botoesFiltro.forEach(botao => {
         botao.addEventListener('click', () => {
           const filtroSelecionado = botao.getAttribute('data-filter');
@@ -731,72 +1018,142 @@
             // Mostra se for "all" OU se bater a Tag OU se bater o Status
             if (filtroSelecionado === 'all' || 
                 tagDoBanner === filtroSelecionado || 
-                statusDoBanner === filtroSelecionado) {
-              banner.style.display = 'block'; 
+                statusDoBanner === filtroSelecionado) { 
+              banner.setAttribute('data-filtro-tag-match', 'true');
             } else {
-              banner.style.display = 'none';
+              banner.setAttribute('data-filtro-tag-match', 'false');
             }
           });
           menuTags.classList.add('hidden');
           
           // Limpa a barra de pesquisa para não confundir
           document.querySelector('input[type="text"]').value = '';
+          
+          // Reseta para página 1 ao filtrar
+          paginaAtual.pendentes = 1;
+          paginaAtual.confirmacao = 1;
+          aplicarFiltrosEPaginacao();
         });
       });
 
+      // Função de busca atualizada para usar atributos em vez de display direto
       function filtrarLeads(textoDigitado) {
         const termo = textoDigitado.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-        
         const todosCards = document.querySelectorAll('.banner-item');
 
         todosCards.forEach(card => {
           const h1 = card.querySelector('h1');
-          const tagDoBanner = card.getAttribute('data-tag');
-          
           if (!h1) return;
-
           const nomeLead = h1.textContent.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-
-          const passaNaBusca = termo === '' || nomeLead.includes(termo);
-          const passaNaTag = filtroTagAtivo === 'all' || tagDoBanner === filtroTagAtivo;
-
-          if (passaNaBusca && passaNaTag) {
-            card.style.display = 'block'; 
+          
+          if (termo === '' || nomeLead.includes(termo)) {
+            card.setAttribute('data-filtro-busca-match', 'true');
           } else {
-            card.style.display = 'none';
+            card.setAttribute('data-filtro-busca-match', 'false');
           }
         });
 
-        verificarLeadsVazios();
+        // Reseta paginação ao buscar
+        paginaAtual.pendentes = 1;
+        paginaAtual.confirmacao = 1;
+        aplicarFiltrosEPaginacao();
       }
 
-      function verificarLeadsVazios() {
-        // Verifica aba de Leads Pendentes
-        const gridPendentes = document.querySelector('#tab-leads-pendentes .custom-scroll');
-        const cardsPendentesVisiveis = Array.from(gridPendentes.querySelectorAll('.banner-item')).filter(card => card.style.display !== 'none');
-        const mensagemPendentes = document.getElementById('mensagem-vazia-pendentes');
+      // Função Central que decide quem aparece na tela
+      function aplicarFiltrosEPaginacao() {
+        const isTelaGrande = window.matchMedia('(min-width: 1400px)').matches;
         
-        if (cardsPendentesVisiveis.length === 0) {
-          gridPendentes.classList.add('hidden');
-          mensagemPendentes.classList.remove('hidden');
+        // Processa ambas as abas
+        processarAba('pendentes', isTelaGrande);
+        processarAba('confirmacao', isTelaGrande);
+      }
+
+      function processarAba(tipo, isTelaGrande) {
+        const containerId = tipo === 'pendentes' ? '#tab-leads-pendentes' : '#tab-status-confirmacao';
+        const container = document.querySelector(containerId);
+        const grid = container.querySelector('.custom-scroll');
+        const cards = Array.from(grid.querySelectorAll('.banner-item'));
+        const msgVazia = document.getElementById(`mensagem-vazia-${tipo}`);
+        const paginacaoContainer = document.getElementById(`paginacao-${tipo}`);
+
+        // 1. Identificar cards válidos pelos filtros (Tag e Busca)
+        const cardsValidos = cards.filter(card => {
+          // Se o atributo não existir, assume true (primeira carga)
+          const matchTag = card.getAttribute('data-filtro-tag-match') !== 'false';
+          const matchBusca = card.getAttribute('data-filtro-busca-match') !== 'false';
+          return matchTag && matchBusca;
+        });
+
+        // 2. Lógica de Exibição
+        if (cardsValidos.length === 0) {
+          grid.classList.add('hidden');
+          msgVazia.classList.remove('hidden');
+          if(paginacaoContainer) paginacaoContainer.classList.add('hidden'); // Esconde botões se vazio
+          return;
         } else {
-          gridPendentes.classList.remove('hidden');
-          mensagemPendentes.classList.add('hidden');
+          grid.classList.remove('hidden');
+          msgVazia.classList.add('hidden');
         }
 
-        // Verifica aba de Status Confirmação
-        const gridConfirmacao = document.querySelector('#tab-status-confirmacao .custom-scroll');
-        const cardsConfirmacaoVisiveis = Array.from(gridConfirmacao.querySelectorAll('.banner-item')).filter(card => card.style.display !== 'none');
-        const mensagemConfirmacao = document.getElementById('mensagem-vazia-confirmacao');
-        
-        if (cardsConfirmacaoVisiveis.length === 0) {
-          gridConfirmacao.classList.add('hidden');
-          mensagemConfirmacao.classList.remove('hidden');
+        // Esconde todos inicialmente
+        cards.forEach(c => c.style.display = 'none');
+
+        if (isTelaGrande) {
+          // --- MODO PAGINAÇÃO ---
+          if(paginacaoContainer) paginacaoContainer.classList.remove('hidden');
+
+          // Cálculo dinâmico de itens por página
+          let itensPorPagina = 8; // Mínimo padrão
+          const alturaDisponivel = grid.clientHeight;
+          
+          if (alturaDisponivel > 0) {
+            // Altura do card (7.7rem) + gap (0.5rem) ≈ 132px
+            const alturaItem = 132; 
+            const linhas = Math.floor(alturaDisponivel / alturaItem);
+            itensPorPagina = Math.max(8, linhas * 2);
+          }
+
+          // Ajusta a página atual se o redimensionamento mudar o número de páginas
+          const totalPaginas = Math.ceil(cardsValidos.length / itensPorPagina) || 1;
+          if (paginaAtual[tipo] > totalPaginas) paginaAtual[tipo] = totalPaginas;
+
+          const pagina = paginaAtual[tipo];
+          const inicio = (pagina - 1) * itensPorPagina;
+          const fim = inicio + itensPorPagina;
+          
+          const cardsDaPagina = cardsValidos.slice(inicio, fim);
+          
+          cardsDaPagina.forEach(c => c.style.display = 'block');
+
+          // Atualiza estado dos botões
+          const btnPrev = paginacaoContainer.querySelector('.btn-prev');
+          const btnNext = paginacaoContainer.querySelector('.btn-next');
+          
+          btnPrev.disabled = pagina === 1;
+          btnNext.disabled = fim >= cardsValidos.length;
+
+          // Atualiza a Barra de Orientação
+          const barraIndicadora = paginacaoContainer.querySelector('.barra-indicadora');
+          const alturaBarra = 100 / totalPaginas;
+          const topBarra = (pagina - 1) * alturaBarra;
+          
+          barraIndicadora.style.height = `${alturaBarra}%`;
+          barraIndicadora.style.top = `${topBarra}%`;
+
         } else {
-          gridConfirmacao.classList.remove('hidden');
-          mensagemConfirmacao.classList.add('hidden');
+          // --- MODO SCROLL (Telas menores) ---
+          if(paginacaoContainer) paginacaoContainer.classList.add('hidden');
+          cardsValidos.forEach(c => c.style.display = 'block');
         }
       }
+
+      function mudarPagina(tipo, direcao) {
+        paginaAtual[tipo] += direcao;
+        aplicarFiltrosEPaginacao();
+      }
+
+      // Ouvinte para redimensionamento da tela (alternar entre scroll e paginação dinamicamente)
+      window.addEventListener('resize', aplicarFiltrosEPaginacao);
 
       // --- LÓGICA DO TOAST DE BOAS-VINDAS ---
 
@@ -842,7 +1199,8 @@
       }, 500);
     }
 
-      verificarLeadsVazios();
+      // Inicializa
+      aplicarFiltrosEPaginacao();
     </script>
 
   </body>
